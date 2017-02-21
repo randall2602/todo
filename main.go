@@ -17,8 +17,8 @@ type database struct {
 }
 
 func (db *database) Init(projectID string) {
-    db.projectID := projectID
-    db.ctx := context.Background()
+    db.projectID = projectID
+    db.ctx = context.Background()
     db.client, err := datastore.NewClient(db.ctx, db.projectID)
     if err != nil {
             log.Fatalf("Failed to create client: %v", err)
@@ -29,7 +29,7 @@ type Task struct {
     Description string
 }
 
-func (db *database) StoreTask(kind, name string, task Task) key string {
+func (db *database) StoreTask(kind, name string, task Task) string {
     key := datastore.NameKey(kind, name, nill)
     if _, err := db.client.Put(db.ctx, key, &task); err != nill {
         log.Fatalf("Failed to save task: %v", err)
