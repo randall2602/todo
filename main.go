@@ -6,6 +6,7 @@ import (
         "log"
         "bufio"
         "os"
+        "strconv"
 
         // Imports the Google Cloud Datastore client package.
         "cloud.google.com/go/datastore"
@@ -53,7 +54,7 @@ func main() {
         }
         description := scanner.Text()
         taskCounter++
-        name := "task" + toString(taskCounter)
+        name := "task" + strconv.Itoa(taskCounter)
         task := Task{
             Description: description,
         }
