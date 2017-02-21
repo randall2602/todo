@@ -41,10 +41,21 @@ func (db *database) StoreTask(kind, name string, task Task) *datastore.Key {
 func main() {
     var db database
     db.Init("alert-height-150418")
+    scanner := buffio.NewScanner(os.Stdin)
     kind := "Task"
-    name := "task001"
-    task := Task{
-            Description: "Buy milk",
+    taskCounter := 0
+    fmt.Print("q to quit; enter first task: ")
+    for scanner.Scan() {
+        if scanner.Text() == "quit" {
+            break
+        }
+        description := scanner.Text()
+        taskCounter++
+        name := "task" + taskCounter.toString()
+        task := Task{
+            Description: description,
+        }
+        fmt.Printf("Saved %v\n", db.StoreTask(kind, name, task))
+        fmt.Print("enter next task: ")
     }
-    fmt.Printf("Saved %v\n", db.StoreTask(kind, name, task))
 }
