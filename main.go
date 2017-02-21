@@ -4,7 +4,6 @@ package main
 import (
         "fmt"
         "log"
-        "errors"
 
         // Imports the Google Cloud Datastore client package.
         "cloud.google.com/go/datastore"
@@ -14,7 +13,7 @@ import (
 type database struct {
     projectID string
     ctx context.Context
-    client datastore.Client
+    client *datastore.Client
 }
 
 func (db *database) Init(projectID string) {
