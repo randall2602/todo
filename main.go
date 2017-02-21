@@ -10,38 +10,40 @@ import (
         "golang.org/x/net/context"
 )
 
+type database struct {
+    projectID string
+    ctx context.Context
+    client datastore.Client
+}
+
+func (db *database) Init(projectID string) {
+    db.projectID := projectID
+    db.ctx := context.Background()
+    db.client, err := datastore.NewClient(db.ctx, db.projectID)
+    if err != nil {
+            log.Fatalf("Failed to create client: %v", err)
+    }
+}
+
 type Task struct {
-        Description string
+    Description string
+}
+
+func (db *database) StoreTask(kind, name string, task Task) key string {
+    key := datastore.NameKey(kind, name, nill)
+    if _, err := db.client.Put(db.ctx, key, &task); err != nill {
+        log.Fatalf("Failed to save task: %v", err)
+    }
+    return key
 }
 
 func main() {
-        ctx := context.Background()
-
-        // Setx your Google Cloud Platform project ID.
-        projectID := "alert-height-150418"
-
-        // Creates a client.
-        client, err := datastore.NewClient(ctx, projectID)
-        if err != nil {
-                log.Fatalf("Failed to create client: %v", err)
-        }
-
-        // Sets the kind for the new entity.
-        kind := "Task"
-        // Sets the name/ID for the new entity.
-        name := "task001"
-        // Creates a Key instance.
-        taskKey := datastore.NameKey(kind, name, nil)
-
-        // Creates a Task instance.
-        task := Task{
-                Description: "Buy milk",
-        }
-
-        // Saves the new entity.
-        if _, err := client.Put(ctx, taskKey, &task); err != nil {
-                log.Fatalf("Failed to save task: %v", err)
-        }
-
-        fmt.Printf("Saved %v: %v\n", taskKey, task.Description)
+    var db database
+    db.Init("alert-height-150418")
+    kind := "Task"
+    name := "task001"
+    task := Task{
+            Description: "Buy milk",
+    }
+    fmt.Printf("Saved %v\n", db.StoreTask(kind, name, task))
 }
