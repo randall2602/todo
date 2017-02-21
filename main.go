@@ -4,6 +4,8 @@ package main
 import (
         "fmt"
         "log"
+        "buffio"
+        "os"
 
         // Imports the Google Cloud Datastore client package.
         "cloud.google.com/go/datastore"
@@ -51,7 +53,7 @@ func main() {
         }
         description := scanner.Text()
         taskCounter++
-        name := "task" + taskCounter.toString()
+        name := "task" + toString(taskCounter)
         task := Task{
             Description: description,
         }
