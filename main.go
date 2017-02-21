@@ -4,7 +4,7 @@ package main
 import (
         "fmt"
         "log"
-        "buffio"
+        "bufio"
         "os"
 
         // Imports the Google Cloud Datastore client package.
@@ -43,7 +43,7 @@ func (db *database) StoreTask(kind, name string, task Task) *datastore.Key {
 func main() {
     var db database
     db.Init("alert-height-150418")
-    scanner := buffio.NewScanner(os.Stdin)
+    scanner := bufio.NewScanner(os.Stdin)
     kind := "Task"
     taskCounter := 0
     fmt.Print("q to quit; enter first task: ")
