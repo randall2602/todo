@@ -4,6 +4,7 @@ package main
 import (
         "fmt"
         "log"
+        "errors"
 
         // Imports the Google Cloud Datastore client package.
         "cloud.google.com/go/datastore"
@@ -19,7 +20,8 @@ type database struct {
 func (db *database) Init(projectID string) {
     db.projectID = projectID
     db.ctx = context.Background()
-    db.client, err := datastore.NewClient(db.ctx, db.projectID)
+    var err error
+    db.client, err = datastore.NewClient(db.ctx, db.projectID)
     if err != nil {
             log.Fatalf("Failed to create client: %v", err)
     }
