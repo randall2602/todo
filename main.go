@@ -30,9 +30,9 @@ type Task struct {
     Description string
 }
 
-func (db *database) StoreTask(kind, name string, task Task) string {
-    key := datastore.NameKey(kind, name, nill)
-    if _, err := db.client.Put(db.ctx, key, &task); err != nill {
+func (db *database) StoreTask(kind, name string, task Task) *datastore.Key {
+    key := datastore.NameKey(kind, name, nil)
+    if _, err := db.client.Put(db.ctx, key, &task); err != nil {
         log.Fatalf("Failed to save task: %v", err)
     }
     return key
